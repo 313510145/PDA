@@ -11,7 +11,7 @@ class corner_stitcher {
     public:
         void input_information(std::istream& is);
         void output_layout(std::ostream& os) const;
-        void output_tile_list_neighbor_num(std::ostream& os) ;
+        void output_tile_list_neighbor_num(std::ostream& os);
         void output_point_finding(std::ostream& os) const;
         corner_stitcher();
         ~corner_stitcher();
