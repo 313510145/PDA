@@ -1,4 +1,4 @@
-.PHONY: all check verify run generate debug clean
+.PHONY: all check verify run run_valgrind generate debug clean
 
 CXX = g++
 CXX_FLAG = -Wall -std=c++11 -g
@@ -66,7 +66,14 @@ verify: run generate | $(VERIFICATION_DIRECTORY)
 		diff $(OUTPUT_DIRECTORY)/"$$testcase_base".out $(GOLDEN_DIRECTORY)/"$$testcase_base".gold | tee $(VERIFICATION_DIRECTORY)/"$$testcase_base".log; \
 	done
 
-run: $(TARGET) | $(MEMORY_DIRECTORY) $(OUTPUT_DIRECTORY)
+run: $(TARGET) | $(OUTPUT_DIRECTORY)
+	for testcase in $(TESTCASE); do \
+		testcase_base=$$(basename "$$testcase"); \
+		testcase_base=$${testcase_base%.*}; \
+		./$(TARGET) "$$testcase" $(OUTPUT_DIRECTORY)/"$$testcase_base".out; \
+	done
+
+run_valgrind: $(TARGET) | $(MEMORY_DIRECTORY) $(OUTPUT_DIRECTORY)
 	for testcase in $(TESTCASE); do \
 		testcase_base=$$(basename "$$testcase"); \
 		testcase_base=$${testcase_base%.*}; \
