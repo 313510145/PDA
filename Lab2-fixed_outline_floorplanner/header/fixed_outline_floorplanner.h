@@ -6,9 +6,9 @@
 #include <iostream>
 #include <vector>
 
-const double MAX_TEMPERATURE = 10e6;
-const double MIN_TEMPERATURE = 10e-6;
-const double REDUCTION_RATE = 1 - 10e-4 - 10e-6;
+const double MAX_TEMPERATURE = 1e7;
+const double MIN_TEMPERATURE = 1e-5;
+const double REDUCTION_RATE = 1 - 1e-3 - 1e-5;
 enum OPERATION {SWAP_IN_POSITIVE, SWAP_IN_NEGATIVE, SWAP_IN_BOTH, ROTATE, OPERATION_NUM};
 
 class fixed_outline_floorplanner {
