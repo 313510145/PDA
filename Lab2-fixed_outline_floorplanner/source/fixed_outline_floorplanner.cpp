@@ -42,7 +42,7 @@ void fixed_outline_floorplanner::input_net(std::istream& is) {
     }
 }
 
-void fixed_outline_floorplanner::random_search() {
+void fixed_outline_floorplanner::simulated_annealing() {
     double i;
     unsigned int a, b;
     unsigned int choice;
@@ -59,22 +59,7 @@ void fixed_outline_floorplanner::random_search() {
                 b = static_cast<unsigned int>(static_cast<double>(this->sequence_pair_positive.size()) * rand() / (RAND_MAX + 1.0));
             } while (a == b);
             choice = static_cast<unsigned int>(static_cast<double>(OPERATION_NUM) * rand() / (RAND_MAX + 1.0));
-            switch (choice) {
-                case SWAP_IN_POSITIVE:
-                    swap_in_positive(a, b);
-                    break;
-                case SWAP_IN_NEGATIVE:
-                    swap_in_negative(a, b);
-                    break;
-                case SWAP_IN_BOTH:
-                    swap_in_both(a, b);
-                    break;
-                case ROTATE:
-                    rotate(a);
-                    break;
-                default:
-                    break;
-            }
+            choice_and_index_operation(choice, a, b);
             place_in();
             calculate_extra_area();
             if (this->area_value < this->best_area_value) {
@@ -88,22 +73,7 @@ void fixed_outline_floorplanner::random_search() {
                     this->best_area_value = this->area_value;
                 }
                 else {
-                    switch (choice) {
-                        case SWAP_IN_POSITIVE:
-                            swap_in_positive(a, b);
-                            break;
-                        case SWAP_IN_NEGATIVE:
-                            swap_in_negative(a, b);
-                            break;
-                        case SWAP_IN_BOTH:
-                            swap_in_both(a, b);
-                            break;
-                        case ROTATE:
-                            rotate(a);
-                            break;
-                        default:
-                            break;
-                    }
+                    choice_and_index_operation(choice, a, b);
                 }
             }
             this->temperature *= REDUCTION_RATE;
@@ -117,22 +87,7 @@ void fixed_outline_floorplanner::random_search() {
             b = static_cast<unsigned int>(static_cast<double>(this->sequence_pair_positive.size()) * rand() / (RAND_MAX + 1.0));
         } while (a == b);
         choice = static_cast<unsigned int>(static_cast<double>(OPERATION_NUM) * rand() / (RAND_MAX + 1.0));
-        switch (choice) {
-            case SWAP_IN_POSITIVE:
-                swap_in_positive(a, b);
-                break;
-            case SWAP_IN_NEGATIVE:
-                swap_in_negative(a, b);
-                break;
-            case SWAP_IN_BOTH:
-                swap_in_both(a, b);
-                break;
-            case ROTATE:
-                rotate(a);
-                break;
-            default:
-                break;
-        }
+        choice_and_index_operation(choice, a, b);
         place_in();
         calculate_area();
         calculate_cost();
@@ -148,42 +103,12 @@ void fixed_outline_floorplanner::random_search() {
                     this->best_cost = this->cost;
                 }
                 else {
-                    switch (choice) {
-                        case SWAP_IN_POSITIVE:
-                            swap_in_positive(a, b);
-                            break;
-                        case SWAP_IN_NEGATIVE:
-                            swap_in_negative(a, b);
-                            break;
-                        case SWAP_IN_BOTH:
-                            swap_in_both(a, b);
-                            break;
-                        case ROTATE:
-                            rotate(a);
-                            break;
-                        default:
-                            break;
-                    }
+                    choice_and_index_operation(choice, a, b);
                 }
             }
         }
         else {
-            switch (choice) {
-                case SWAP_IN_POSITIVE:
-                    swap_in_positive(a, b);
-                    break;
-                case SWAP_IN_NEGATIVE:
-                    swap_in_negative(a, b);
-                    break;
-                case SWAP_IN_BOTH:
-                    swap_in_both(a, b);
-                    break;
-                case ROTATE:
-                    rotate(a);
-                    break;
-                default:
-                    break;
-            }
+            choice_and_index_operation(choice, a, b);
         }
         this->temperature *= REDUCTION_RATE;
     } while (this->temperature > MIN_TEMPERATURE);
@@ -390,4 +315,23 @@ void fixed_outline_floorplanner::update_sequence_pair() {
 void fixed_outline_floorplanner::retrieve_sequence_pair() {
     this->sequence_pair_positive = this->best_sequence_pair_positive;
     this->sequence_pair_negative = this->best_sequence_pair_negative;
+}
+
+void fixed_outline_floorplanner::choice_and_index_operation(unsigned int choice, unsigned int a, unsigned int b) {
+    switch (choice) {
+        case SWAP_IN_POSITIVE:
+            swap_in_positive(a, b);
+            break;
+        case SWAP_IN_NEGATIVE:
+            swap_in_negative(a, b);
+            break;
+        case SWAP_IN_BOTH:
+            swap_in_both(a, b);
+            break;
+        case ROTATE:
+            rotate(a);
+            break;
+        default:
+            break;
+    }
 }

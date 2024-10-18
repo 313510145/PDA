@@ -15,7 +15,7 @@ class fixed_outline_floorplanner {
     public:
         void input_block(std::istream& is);
         void input_net(std::istream& is);
-        void random_search();
+        void simulated_annealing();
         void output_report(std::ostream& os) const;
         fixed_outline_floorplanner();
         explicit fixed_outline_floorplanner(char* alpha_in);
@@ -32,6 +32,7 @@ class fixed_outline_floorplanner {
         void calculate_cost();
         void update_sequence_pair();
         void retrieve_sequence_pair();
+        void choice_and_index_operation(unsigned int choice, unsigned int a, unsigned int b);
         double temperature;
         double run_time;
         double alpha;

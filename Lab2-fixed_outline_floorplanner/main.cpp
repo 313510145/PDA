@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
     }
     fof->input_net(input_file);
     input_file.close();
-    fof->random_search();
+    fof->simulated_annealing();
     std::ofstream output_file(argv[4]);
     if (!output_file) {
         std::cout << "Cannot open the output file: " << argv[4] << std::endl;
