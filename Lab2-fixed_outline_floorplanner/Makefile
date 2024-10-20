@@ -49,7 +49,7 @@ $(TARGET): main.cpp $(OBJECT)
 $(OBJECT_DIRECTORY)/%.o: $(SOURCE_DIRECTORY)/%.cpp | $(OBJECT_DIRECTORY)
 	$(CXX) $(CXX_FLAG) $(INCLUDE_PATH) -c $< -o $@
 
-check:
+check: $(CPPCHECK)
 	./$(CPPCHECK) $(CPPCHECK_FLAG) $(INCLUDE_PATH) .
 
 verify: run $(VERIFIER) | $(VERIFICATION_DIRECTORY)
