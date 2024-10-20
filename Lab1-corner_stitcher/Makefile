@@ -81,14 +81,14 @@ run_valgrind: $(TARGET) | $(MEMORY_DIRECTORY) $(OUTPUT_DIRECTORY)
 		$(CHECKCC) $(CHECKCC_FLAG) --log-file=$(MEMORY_DIRECTORY)/"$$testcase_base.log" ./$(TARGET) "$$testcase" $(OUTPUT_DIRECTORY)/"$$testcase_base".out; \
 	done
 
-generate: | $(GOLDEN_DIRECTORY)
+generate: $(GENERATOR) | $(GOLDEN_DIRECTORY)
 	for testcase in $(TESTCASE); do \
 		testcase_base=$$(basename "$$testcase"); \
 		testcase_base=$${testcase_base%.*}; \
 		./$(GENERATOR) "$$testcase" $(GOLDEN_DIRECTORY)/"$$testcase_base".gold; \
 	done
 
-debug: $(TARGET) $(DRAWING) | $(OUTPUT_DIRECTORY) $(LAYOUT_DIRECTORY)
+debug: $(TARGET) $(DRAW) | $(OUTPUT_DIRECTORY) $(LAYOUT_DIRECTORY)
 	for testcase in $(TESTCASE); do \
 		testcase_base=$$(basename "$$testcase"); \
 		testcase_base=$${testcase_base%.*}; \
