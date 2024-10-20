@@ -10,8 +10,7 @@ CHECKCC_FLAG = --leak-check=full --show-leak-kinds=all --track-origins=yes --ver
 CPPCHECK = ../../cppcheck-2.13.0/cppcheck
 CPPCHECK_FLAG = --enable=all --inconclusive --suppress=missingIncludeSystem
 
-PYTHON = python3
-DRAWING = draw_block_layout.py
+PYTHON3 = python3
 
 GOLDEN_DIRECTORY = golden
 MEMORY_DIRECTORY = memory
@@ -21,6 +20,7 @@ LAYOUT_DIRECTORY = layout
 VERIFICATION_DIRECTORY = verification
 
 SOURCE_DIRECTORY = source
+SCRIPT_DIRECTORY = script
 
 SOURCE = $(wildcard $(SOURCE_DIRECTORY)/*.cpp)
 OBJECT = $(patsubst $(SOURCE_DIRECTORY)/%.cpp, $(OBJECT_DIRECTORY)/%.o, $(SOURCE))
@@ -28,7 +28,8 @@ OBJECT = $(patsubst $(SOURCE_DIRECTORY)/%.cpp, $(OBJECT_DIRECTORY)/%.o, $(SOURCE
 TESTCASE = $(wildcard testcase/*)
 
 TARGET = Lab1
-GENERATOR = script/golden_generate
+GENERATOR = $(SCRIPT_DIRECTORY)/golden_generate
+DRAW = $(SCRIPT_DIRECTORY)/draw_block_layout.py
 
 all: $(TARGET)
 
@@ -92,7 +93,7 @@ debug: $(TARGET) $(DRAWING) | $(OUTPUT_DIRECTORY) $(LAYOUT_DIRECTORY)
 		testcase_base=$$(basename "$$testcase"); \
 		testcase_base=$${testcase_base%.*}; \
 		./$(TARGET) "$$testcase" $(OUTPUT_DIRECTORY)/"$$testcase_base".out $(LAYOUT_DIRECTORY)/"$$testcase_base".layout; \
-		$(PYTHON) $(DRAWING) $(LAYOUT_DIRECTORY)/"$$testcase_base".layout $(LAYOUT_DIRECTORY)/"$$testcase_base".png; \
+		$(PYTHON3) $(DRAW) $(LAYOUT_DIRECTORY)/"$$testcase_base".layout $(LAYOUT_DIRECTORY)/"$$testcase_base".png; \
 	done
 
 clean:
