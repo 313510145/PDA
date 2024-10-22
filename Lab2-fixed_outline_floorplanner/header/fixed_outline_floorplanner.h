@@ -30,8 +30,6 @@ class fixed_outline_floorplanner {
         void calculate_area();
         void calculate_extra_area();
         void calculate_cost();
-        void update_sequence_pair();
-        void retrieve_sequence_pair();
         void choice_and_index_operation(unsigned int choice, unsigned int a, unsigned int b);
         double temperature;
         double run_time;
@@ -44,7 +42,6 @@ class fixed_outline_floorplanner {
         std::vector<block*> block_list;
         std::vector<net*> net_list;
         std::vector<block*> sequence_pair_positive, sequence_pair_negative;
-        std::vector<block*> best_sequence_pair_positive, best_sequence_pair_negative;
 };
 
 #endif  // FIXED_OUTLINE_FLOORPLANNER_H

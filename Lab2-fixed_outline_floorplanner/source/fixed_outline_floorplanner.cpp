@@ -63,13 +63,11 @@ void fixed_outline_floorplanner::simulated_annealing() {
             place_in();
             calculate_extra_area();
             if (this->area_value < this->best_area_value) {
-                update_sequence_pair();
                 this->best_area_value = this->area_value;
             }
             else {
                 i = rand() / (RAND_MAX + 1.0);
                 if (i < exp((this->best_area_value - this->area_value) / this->temperature)) {
-                    update_sequence_pair();
                     this->best_area_value = this->area_value;
                 }
                 else {
@@ -79,7 +77,6 @@ void fixed_outline_floorplanner::simulated_annealing() {
             this->temperature *= REDUCTION_RATE;
         } while (this->temperature > MIN_TEMPERATURE);
     } while (this->best_area_value > 0);
-    retrieve_sequence_pair();
     this->temperature = MAX_TEMPERATURE;
     do {
         a = static_cast<unsigned int>(static_cast<double>(this->sequence_pair_positive.size()) * rand() / (RAND_MAX + 1.0));
@@ -93,13 +90,11 @@ void fixed_outline_floorplanner::simulated_annealing() {
         calculate_cost();
         if (this->area.x <= this->outline.x && this->area.y <= this->outline.y) {
             if (this->cost < this->best_cost) {
-                update_sequence_pair();
                 this->best_cost = this->cost;
             }
             else {
                 i = rand() / (RAND_MAX + 1.0);
                 if (i < exp((this->best_cost - this->cost) / this->temperature)) {
-                    update_sequence_pair();
                     this->best_cost = this->cost;
                 }
                 else {
@@ -112,7 +107,6 @@ void fixed_outline_floorplanner::simulated_annealing() {
         }
         this->temperature *= REDUCTION_RATE;
     } while (this->temperature > MIN_TEMPERATURE);
-    retrieve_sequence_pair();
     place_in();
     calculate_area();
     calculate_cost();
@@ -164,9 +158,7 @@ fixed_outline_floorplanner::~fixed_outline_floorplanner() {
     }
     this->block_list.clear();
     this->sequence_pair_positive.clear();
-    this->best_sequence_pair_positive.clear();
     this->sequence_pair_negative.clear();
-    this->best_sequence_pair_negative.clear();
 }
 
 void fixed_outline_floorplanner::initialize_sequence_pair() {
@@ -305,16 +297,6 @@ void fixed_outline_floorplanner::calculate_cost() {
         this->hpwl += (ur.x - ll.x + ur.y - ll.y);
     }
     this->cost = this->alpha * this->area_value + (1 - this->alpha) * this->hpwl;
-}
-
-void fixed_outline_floorplanner::update_sequence_pair() {
-    this->best_sequence_pair_positive = this->sequence_pair_positive;
-    this->best_sequence_pair_negative = this->sequence_pair_negative;
-}
-
-void fixed_outline_floorplanner::retrieve_sequence_pair() {
-    this->sequence_pair_positive = this->best_sequence_pair_positive;
-    this->sequence_pair_negative = this->best_sequence_pair_negative;
 }
 
 void fixed_outline_floorplanner::choice_and_index_operation(unsigned int choice, unsigned int a, unsigned int b) {
