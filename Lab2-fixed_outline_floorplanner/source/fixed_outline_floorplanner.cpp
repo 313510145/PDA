@@ -87,8 +87,8 @@ void fixed_outline_floorplanner::simulated_annealing() {
         choice_and_index_operation(choice, a, b);
         place_in();
         calculate_area();
-        calculate_cost();
         if (this->area.x <= this->outline.x && this->area.y <= this->outline.y) {
+            calculate_cost();
             if (this->cost < this->best_cost) {
                 this->best_cost = this->cost;
             }
