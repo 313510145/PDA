@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 
+const int MAX_TIME = 300;
+const double THRESHOLD = 0.95;
 const double MAX_TEMPERATURE = 1e7;
 const double MIN_TEMPERATURE = 1e-5;
 const double REDUCTION_RATE = 1 - 1e-3 - 1e-5;

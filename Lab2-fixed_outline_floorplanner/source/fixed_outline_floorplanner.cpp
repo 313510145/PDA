@@ -106,11 +106,11 @@ void fixed_outline_floorplanner::simulated_annealing() {
             choice_and_index_operation(choice, a, b);
         }
         this->temperature *= REDUCTION_RATE;
-    } while (this->temperature > MIN_TEMPERATURE);
+        this->run_time = (double)(clock() - start) / CLOCKS_PER_SEC;
+    } while (this->temperature > MIN_TEMPERATURE && this->run_time < THRESHOLD * MAX_TIME);
     place_in();
     calculate_area();
     calculate_cost();
-    this->run_time = (double)(clock() - start) / CLOCKS_PER_SEC;
 }
 
 void fixed_outline_floorplanner::output_report(std::ostream& os) const {
