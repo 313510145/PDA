@@ -70,7 +70,7 @@ run_valgrind: $(TARGET) | $(MEMORY_DIRECTORY) $(OUTPUT_DIRECTORY)
 	for testcase in $(TESTCASE); do \
 		testcase_base=$$(basename "$$testcase"); \
 		testcase_base=$${testcase_base%.*}; \
-		$(CHECKCC) $(CHECKCC_FLAG) --log-file=$(MEMORY_DIRECTORY)/"$$testcase_base.log" ./$(TARGET) $(ALPHA) "$$testcase" $(TESTCASE_DIRECTORY)/net/"$$testcase_base".net $(OUTPUT_DIRECTORY)/"$$testcase_base".out; \
+		$(CHECKCC) $(CHECKCC_FLAG) --log-file=$(MEMORY_DIRECTORY)/"$$testcase_base.log" ./$(TARGET) $(ALPHA) "$$testcase" $(TESTCASE_NET_DIRECTORY)/"$$testcase_base".net $(OUTPUT_DIRECTORY)/"$$testcase_base".out; \
 	done
 
 clean:
