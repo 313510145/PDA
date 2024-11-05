@@ -262,14 +262,16 @@ void corner_stitcher::output_layout(std::ostream& os) const {
     os << std::endl;
 }
 
-bool tile_sorting_function(const tile* a, const tile* b) {
-    return a->get_index() < b->get_index();
-}
-
 void corner_stitcher::output_tile_list_neighbor_num(std::ostream& os) {
     os << this->tile_list.size() << std::endl;
     int block_num, space_num;
-    std::sort(this->tile_list.begin(), this->tile_list.end(), tile_sorting_function);
+    std::sort(
+        this->tile_list.begin(),
+        this->tile_list.end(),
+        [](const tile* a, const tile* b) {
+            return a->get_index() < b->get_index();
+        }
+    );
     for (const auto* bl: this->tile_list) {
         if (bl->get_index() > 0) {
             os << bl->get_index() << " ";
