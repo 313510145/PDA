@@ -123,7 +123,7 @@ void optimizer_legalizer::input_merged_block_and_output_result(std::istream& is,
                                 temp_double_a = (*first_segment)->get_left_x();
                             }
                             else {
-                                temp_double_a += ceil(b->get_width() / bottom->get_width()) * bottom->get_width();
+                                temp_double_a = bottom->get_right_x();
                             }
                             break;
                         }
