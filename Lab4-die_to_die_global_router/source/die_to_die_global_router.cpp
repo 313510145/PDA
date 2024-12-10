@@ -47,9 +47,15 @@ void die_to_die_global_router::input_g_cell(std::istream& is) {
     for (int i = 0; i < this->grid_y_num; i++) {
         for (int j = 0; j < this->grid_x_num; j++) {
             is >> temp;
-            this->grid_map[i][j].set_horizontal_capacity(temp);
+            this->grid_map[i][j].set_left_capacity(temp);
+            if (j != 0) {
+                this->grid_map[i][j - 1].set_right_capacity(temp);
+            }
             is >> temp;
-            this->grid_map[i][j].set_vertical_capacity(temp);
+            this->grid_map[i][j].set_bottom_capacity(temp);
+            if (i != 0) {
+                this->grid_map[i - 1][j].set_top_capacity(temp);
+            }
         }
     }
 }
