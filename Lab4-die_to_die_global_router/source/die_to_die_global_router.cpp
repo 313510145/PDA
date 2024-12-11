@@ -96,12 +96,17 @@ void die_to_die_global_router::a_star_search() {
     next_movement[RIGHT].x = 1;
     next_movement[UP].y = 1;
     next_movement[DOWN].y = -1;
+    bool** traversed_map = new bool*[this->grid_y_num];
+    double** f_map = new double*[this->grid_y_num];
+    int** parent_map = new int*[this->grid_y_num];
+    for (int i = 0; i < this->grid_y_num; i++) {
+        traversed_map[i] = new bool[this->grid_x_num];
+        f_map[i] = new double[this->grid_x_num];
+        parent_map[i] = new int[this->grid_x_num];
+    }
     for (auto nl: this->net_list) {
         node net_start(nl.second.first.x, nl.second.first.y);
         node net_end(nl.second.second.x, nl.second.second.y);
-        bool traversed_map[this->grid_y_num][this->grid_x_num];
-        double f_map[this->grid_y_num][this->grid_x_num];
-        int parent_map[this->grid_y_num][this->grid_x_num];
         for (int i = 0; i < this->grid_y_num; i++) {
             for (int j = 0; j < this->grid_x_num; j++) {
                 traversed_map[i][j] = 0;
@@ -312,6 +317,14 @@ void die_to_die_global_router::a_star_search() {
         }
         this->net_list_path[nl.first].push_back(net_start.coordinate);
     }
+    for (int i = 0; i < this->grid_y_num; i++) {
+        delete [] traversed_map[i];
+        delete [] f_map[i];
+        delete [] parent_map[i];
+    }
+    delete [] traversed_map;
+    delete [] f_map;
+    delete [] parent_map;
 }
 
 void die_to_die_global_router::output_results(std::ostream& os) {
