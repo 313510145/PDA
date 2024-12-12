@@ -133,131 +133,109 @@ void die_to_die_global_router::a_star_search() {
                 ) {
                     int cell_current_parent_direction = parent_map[cell_current.coordinate.y][cell_current.coordinate.x];
                     cell_next.g = cell_current.g;
-                    if (cell_current_parent_direction == -1) {
-                        switch (i) {
-                            case LEFT:
-                                cell_next.g += 0.5 * this->alpha * this->grid_width;
-                                cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_left_overflow() * this->max_horizontal_cell_cost;
-                                cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
-                                cell_next.g += this->delta * this->via_cost;
-                                break;
-                            case RIGHT:
-                                cell_next.g += 0.5 * this->alpha * this->grid_width;
-                                cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_right_overflow() * this->max_horizontal_cell_cost;
-                                cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
-                                cell_next.g += this->delta * this->via_cost;
-                                break;
-                            case UP:
-                                cell_next.g += 0.5 * this->alpha * this->grid_height;
-                                cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_top_overflow() * this->max_vertical_cell_cost;
-                                cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
-                                break;
-                            case DOWN:
-                                cell_next.g += 0.5 * this->alpha * this->grid_height;
-                                cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_bottom_overflow() * this->max_vertical_cell_cost;
-                                cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
-                                break;
-                        }
-                    }
-                    else {
-                        switch (i) {
-                            case LEFT:
-                                cell_next.g += 0.5 * this->alpha * this->grid_width;
-                                cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_left_overflow() * this->max_horizontal_cell_cost;
-                                cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
-                                switch (cell_current_parent_direction) {
-                                    case RIGHT:
-                                        cell_next.g += 0.5 * this->alpha * this->grid_width;
-                                        cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_right_overflow() * this->max_horizontal_cell_cost;
-                                        cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
-                                        break;
-                                    case UP:
-                                        cell_next.g += 0.5 * this->alpha * this->grid_height;
-                                        cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_top_overflow() * this->max_vertical_cell_cost;
-                                        cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
-                                        cell_next.g += this->delta * this->via_cost;
-                                        break;
-                                    case DOWN:
-                                        cell_next.g += 0.5 * this->alpha * this->grid_height;
-                                        cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_bottom_overflow() * this->max_vertical_cell_cost;
-                                        cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
-                                        cell_next.g += this->delta * this->via_cost;
-                                        break;
-                                }
-                                break;
-                            case RIGHT:
-                                cell_next.g += 0.5 * this->alpha * this->grid_width;
-                                cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_right_overflow() * this->max_horizontal_cell_cost;
-                                cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
-                                switch (cell_current_parent_direction) {
-                                    case LEFT:
-                                        cell_next.g += 0.5 * this->alpha * this->grid_width;
-                                        cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_left_overflow() * this->max_horizontal_cell_cost;
-                                        cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
-                                        break;
-                                    case UP:
-                                        cell_next.g += 0.5 * this->alpha * this->grid_height;
-                                        cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_top_overflow() * this->max_vertical_cell_cost;
-                                        cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
-                                        cell_next.g += this->delta * this->via_cost;
-                                        break;
-                                    case DOWN:
-                                        cell_next.g += 0.5 * this->alpha * this->grid_height;
-                                        cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_bottom_overflow() * this->max_vertical_cell_cost;
-                                        cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
-                                        cell_next.g += this->delta * this->via_cost;
-                                        break;
-                                }
-                                break;
-                            case UP:
-                                cell_next.g += 0.5 * this->alpha * this->grid_height;
-                                cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_top_overflow() * this->max_vertical_cell_cost;
-                                cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
-                                switch (cell_current_parent_direction) {
-                                    case LEFT:
-                                        cell_next.g += 0.5 * this->alpha * this->grid_width;
-                                        cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_left_overflow() * this->max_horizontal_cell_cost;
-                                        cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
-                                        cell_next.g += this->delta * this->via_cost;
-                                        break;
-                                    case RIGHT:
-                                        cell_next.g += 0.5 * this->alpha * this->grid_width;
-                                        cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_right_overflow() * this->max_horizontal_cell_cost;
-                                        cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
-                                        cell_next.g += this->delta * this->via_cost;
-                                        break;
-                                    case DOWN:
-                                        cell_next.g += 0.5 * this->alpha * this->grid_height;
-                                        cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_bottom_overflow() * this->max_vertical_cell_cost;
-                                        cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
-                                        break;
-                                }
-                                break;
-                            case DOWN:
-                                cell_next.g += 0.5 * this->alpha * this->grid_height;
-                                cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_bottom_overflow() * this->max_vertical_cell_cost;
-                                cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
-                                switch (cell_current_parent_direction) {
-                                    case LEFT:
-                                        cell_next.g += 0.5 * this->alpha * this->grid_width;
-                                        cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_left_overflow() * this->max_horizontal_cell_cost;
-                                        cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
-                                        cell_next.g += this->delta * this->via_cost;
-                                        break;
-                                    case RIGHT:
-                                        cell_next.g += 0.5 * this->alpha * this->grid_width;
-                                        cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_right_overflow() * this->max_horizontal_cell_cost;
-                                        cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
-                                        cell_next.g += this->delta * this->via_cost;
-                                        break;
-                                    case UP:
-                                        cell_next.g += 0.5 * this->alpha * this->grid_height;
-                                        cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_top_overflow() * this->max_vertical_cell_cost;
-                                        cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
-                                        break;
-                                }
-                                break;
-                        }
+                    switch (i) {
+                        case LEFT:
+                            cell_next.g += 0.5 * this->alpha * this->grid_width;
+                            cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_left_overflow() * this->max_horizontal_cell_cost;
+                            cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
+                            switch (cell_current_parent_direction) {
+                                case RIGHT:
+                                    cell_next.g += 0.5 * this->alpha * this->grid_width;
+                                    cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_right_overflow() * this->max_horizontal_cell_cost;
+                                    cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
+                                    break;
+                                case UP:
+                                    cell_next.g += 0.5 * this->alpha * this->grid_height;
+                                    cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_top_overflow() * this->max_vertical_cell_cost;
+                                    cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
+                                    cell_next.g += this->delta * this->via_cost;
+                                    break;
+                                case DOWN:
+                                    cell_next.g += 0.5 * this->alpha * this->grid_height;
+                                    cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_bottom_overflow() * this->max_vertical_cell_cost;
+                                    cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
+                                    cell_next.g += this->delta * this->via_cost;
+                                    break;
+                                default:
+                                    cell_next.g += this->delta * this->via_cost;
+                                    break;
+                            }
+                            break;
+                        case RIGHT:
+                            cell_next.g += 0.5 * this->alpha * this->grid_width;
+                            cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_right_overflow() * this->max_horizontal_cell_cost;
+                            cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
+                            switch (cell_current_parent_direction) {
+                                case LEFT:
+                                    cell_next.g += 0.5 * this->alpha * this->grid_width;
+                                    cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_left_overflow() * this->max_horizontal_cell_cost;
+                                    cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
+                                    break;
+                                case UP:
+                                    cell_next.g += 0.5 * this->alpha * this->grid_height;
+                                    cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_top_overflow() * this->max_vertical_cell_cost;
+                                    cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
+                                    cell_next.g += this->delta * this->via_cost;
+                                    break;
+                                case DOWN:
+                                    cell_next.g += 0.5 * this->alpha * this->grid_height;
+                                    cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_bottom_overflow() * this->max_vertical_cell_cost;
+                                    cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
+                                    cell_next.g += this->delta * this->via_cost;
+                                    break;
+                                default:
+                                    cell_next.g += this->delta * this->via_cost;
+                                    break;
+                            }
+                            break;
+                        case UP:
+                            cell_next.g += 0.5 * this->alpha * this->grid_height;
+                            cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_top_overflow() * this->max_vertical_cell_cost;
+                            cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
+                            switch (cell_current_parent_direction) {
+                                case LEFT:
+                                    cell_next.g += 0.5 * this->alpha * this->grid_width;
+                                    cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_left_overflow() * this->max_horizontal_cell_cost;
+                                    cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
+                                    cell_next.g += this->delta * this->via_cost;
+                                    break;
+                                case RIGHT:
+                                    cell_next.g += 0.5 * this->alpha * this->grid_width;
+                                    cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_right_overflow() * this->max_horizontal_cell_cost;
+                                    cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
+                                    cell_next.g += this->delta * this->via_cost;
+                                    break;
+                                case DOWN:
+                                    cell_next.g += 0.5 * this->alpha * this->grid_height;
+                                    cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_bottom_overflow() * this->max_vertical_cell_cost;
+                                    cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
+                                    break;
+                            }
+                            break;
+                        case DOWN:
+                            cell_next.g += 0.5 * this->alpha * this->grid_height;
+                            cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_bottom_overflow() * this->max_vertical_cell_cost;
+                            cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
+                            switch (cell_current_parent_direction) {
+                                case LEFT:
+                                    cell_next.g += 0.5 * this->alpha * this->grid_width;
+                                    cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_left_overflow() * this->max_horizontal_cell_cost;
+                                    cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
+                                    cell_next.g += this->delta * this->via_cost;
+                                    break;
+                                case RIGHT:
+                                    cell_next.g += 0.5 * this->alpha * this->grid_width;
+                                    cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_right_overflow() * this->max_horizontal_cell_cost;
+                                    cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_horizontal_cost();
+                                    cell_next.g += this->delta * this->via_cost;
+                                    break;
+                                case UP:
+                                    cell_next.g += 0.5 * this->alpha * this->grid_height;
+                                    cell_next.g += 0.5 * this->beta * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_top_overflow() * this->max_vertical_cell_cost;
+                                    cell_next.g += 0.5 * this->gamma * this->grid_map[cell_current.coordinate.y][cell_current.coordinate.x].get_vertical_cost();
+                                    break;
+                            }
+                            break;
                     }
                     cell_next.f = cell_next.g + this->alpha * (this->grid_width * abs(net_end.coordinate.x - cell_next.coordinate.x) + this->grid_height * abs(net_end.coordinate.y - cell_next.coordinate.y));
                     if (f_map[cell_next.coordinate.y][cell_next.coordinate.x] == 0 || cell_next.f < f_map[cell_next.coordinate.y][cell_next.coordinate.x]) {
@@ -339,8 +317,7 @@ void die_to_die_global_router::output_results(std::ostream& os) {
                 a = this->lower_left_x + this->grid_width * a;
                 b = this->lower_left_y + this->grid_height * nl.second.first.y;
                 c = this->lower_left_y + this->grid_height * nl.second.second.y;
-                os << "M1 " << a << " " << b << " " << a << " " << c << "\n"
-                   << ".end\n";
+                os << "M1 " << a << " " << b << " " << a << " " << c << "\n";
             }
             else {
                 a = this->lower_left_x + this->grid_width * a;
@@ -348,8 +325,7 @@ void die_to_die_global_router::output_results(std::ostream& os) {
                 c = this->lower_left_y + this->grid_height * nl.second.first.y;
                 os << "via\n"
                    << "M2 " << a << " " << c << " " << b << " " << c << "\n"
-                   << "via\n"
-                   << ".end\n";
+                   << "via\n";
             }
         }
         else {
@@ -374,8 +350,8 @@ void die_to_die_global_router::output_results(std::ostream& os) {
                 }
                 temp = nlp;
             }
-            os << ".end\n";
         }
+        os << ".end\n";
     }
 }
 
