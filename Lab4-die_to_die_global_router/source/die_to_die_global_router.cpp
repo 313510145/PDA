@@ -114,7 +114,7 @@ void die_to_die_global_router::a_star_search() {
                 parent_map[i][j] = -1;
             }
         }
-        net_start.f = this->grid_width * abs(net_end.coordinate.x - net_start.coordinate.x) + this->grid_height * abs(net_end.coordinate.y - net_start.coordinate.y);
+        net_start.f = this->alpha * (this->grid_width * abs(net_end.coordinate.x - net_start.coordinate.x) + this->grid_height * abs(net_end.coordinate.y - net_start.coordinate.y));
         std::priority_queue<node> pq;
         pq.push(net_start);
         while (!pq.empty()) {
@@ -259,7 +259,7 @@ void die_to_die_global_router::a_star_search() {
                                 break;
                         }
                     }
-                    cell_next.f = cell_next.g + this->grid_width * abs(net_end.coordinate.x - cell_next.coordinate.x) + this->grid_height * abs(net_end.coordinate.y - cell_next.coordinate.y);
+                    cell_next.f = cell_next.g + this->alpha * (this->grid_width * abs(net_end.coordinate.x - cell_next.coordinate.x) + this->grid_height * abs(net_end.coordinate.y - cell_next.coordinate.y));
                     if (f_map[cell_next.coordinate.y][cell_next.coordinate.x] == 0 || cell_next.f < f_map[cell_next.coordinate.y][cell_next.coordinate.x]) {
                         f_map[cell_next.coordinate.y][cell_next.coordinate.x] = cell_next.f;
                         parent_map[cell_next.coordinate.y][cell_next.coordinate.x] = REVERSE_DIRECTION[i];
