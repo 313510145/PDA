@@ -310,46 +310,26 @@ void die_to_die_global_router::output_results(std::ostream& os) {
     xy temp;
     for (auto nl: this->net_list) {
         os << "n" << nl.first << "\n";
-        if (this->net_list_path.find(nl.first) == this->net_list_path.end()) {
-            a = nl.second.first.x;
-            b = nl.second.second.x;
-            if (a == b) {
-                a = this->lower_left_x + this->grid_width * a;
-                b = this->lower_left_y + this->grid_height * nl.second.first.y;
-                c = this->lower_left_y + this->grid_height * nl.second.second.y;
+        temp = nl.second.first;
+        for (auto nlp: this->net_list_path[nl.first]) {
+            if (nlp.x == temp.x) {
+                if (nlp.y == temp.y) {
+                    continue;
+                }
+                a = this->lower_left_x + this->grid_width * temp.x;
+                b = this->lower_left_y + this->grid_height * temp.y;
+                c = this->lower_left_y + this->grid_height * nlp.y;
                 os << "M1 " << a << " " << b << " " << a << " " << c << "\n";
             }
             else {
-                a = this->lower_left_x + this->grid_width * a;
-                b = this->lower_left_x + this->grid_width * b;
-                c = this->lower_left_y + this->grid_height * nl.second.first.y;
+                a = this->lower_left_x + this->grid_width * temp.x;
+                b = this->lower_left_x + this->grid_width * nlp.x;
+                c = this->lower_left_y + this->grid_height * temp.y;
                 os << "via\n"
-                   << "M2 " << a << " " << c << " " << b << " " << c << "\n"
-                   << "via\n";
+                    << "M2 " << a << " " << c << " " << b << " " << c << "\n"
+                    << "via\n";
             }
-        }
-        else {
-            temp = nl.second.first;
-            for (auto nlp: this->net_list_path[nl.first]) {
-                if (nlp.x == temp.x) {
-                    if (nlp.y == temp.y) {
-                        continue;
-                    }
-                    a = this->lower_left_x + this->grid_width * temp.x;
-                    b = this->lower_left_y + this->grid_height * temp.y;
-                    c = this->lower_left_y + this->grid_height * nlp.y;
-                    os << "M1 " << a << " " << b << " " << a << " " << c << "\n";
-                }
-                else {
-                    a = this->lower_left_x + this->grid_width * temp.x;
-                    b = this->lower_left_x + this->grid_width * nlp.x;
-                    c = this->lower_left_y + this->grid_height * temp.y;
-                    os << "via\n"
-                       << "M2 " << a << " " << c << " " << b << " " << c << "\n"
-                       << "via\n";
-                }
-                temp = nlp;
-            }
+            temp = nlp;
         }
         os << ".end\n";
     }
