@@ -326,8 +326,8 @@ void die_to_die_global_router::output_results(std::ostream& os) {
                 b = this->lower_left_x + this->grid_width * nlp.x;
                 c = this->lower_left_y + this->grid_height * temp.y;
                 os << "via\n"
-                    << "M2 " << a << " " << c << " " << b << " " << c << "\n"
-                    << "via\n";
+                   << "M2 " << a << " " << c << " " << b << " " << c << "\n"
+                   << "via\n";
             }
             temp = nlp;
         }
