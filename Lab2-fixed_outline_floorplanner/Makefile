@@ -1,7 +1,7 @@
 .PHONY: all check verify run run_valgrind clean
 
 CXX = g++
-CXX_FLAG = -Wall -std=c++11 -g
+CXX_FLAG = -Wall -Wextra -std=c++11 -g
 INCLUDE_PATH = -Iheader
 
 CHECKCC = valgrind
