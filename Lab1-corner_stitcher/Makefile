@@ -28,7 +28,7 @@ OBJECT = $(patsubst $(SOURCE_DIRECTORY)/%.cpp, $(OBJECT_DIRECTORY)/%.o, $(SOURCE
 TESTCASE = $(wildcard testcase/*)
 
 TARGET = Lab1
-GENERATOR = $(SCRIPT_DIRECTORY)/golden_generate
+GENERATOR = $(SCRIPT_DIRECTORY)/golden_generator
 DRAW = $(SCRIPT_DIRECTORY)/draw_block_layout.py
 
 all: $(TARGET)
