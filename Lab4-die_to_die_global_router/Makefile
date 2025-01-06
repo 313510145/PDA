@@ -19,6 +19,7 @@ TESTCASE_DIRECTORY = testcase
 
 SOURCE = $(wildcard $(SOURCE_DIRECTORY)/*.cpp)
 OBJECT = $(patsubst $(SOURCE_DIRECTORY)/%.cpp, $(OBJECT_DIRECTORY)/%.o, $(SOURCE))
+DEPENDENCY = $(patsubst $(SOURCE_DIRECTORY)/%.cpp, $(OBJECT_DIRECTORY)/%.d, $(SOURCE))
 
 TESTCASE = $(wildcard $(TESTCASE_DIRECTORY)/*.gmp)
 
@@ -39,8 +40,10 @@ $(VERIFICATION_DIRECTORY):
 $(TARGET): main.cpp $(OBJECT)
 	$(CXX) $(CXX_FLAG) $(INCLUDE_PATH) $^ -o $@
 
+-include $(DEPENDENCY)
+
 $(OBJECT_DIRECTORY)/%.o: $(SOURCE_DIRECTORY)/%.cpp | $(OBJECT_DIRECTORY)
-	$(CXX) $(CXX_FLAG) $(INCLUDE_PATH) -c $< -o $@
+	$(CXX) $(CXX_FLAG) $(INCLUDE_PATH) -MMD -c $< -o $@
 
 check: $(CPPCHECK)
 	./$(CPPCHECK) $(CPPCHECK_FLAG) $(INCLUDE_PATH) .
