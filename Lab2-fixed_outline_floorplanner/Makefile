@@ -26,6 +26,11 @@ DEPENDENCY = $(patsubst $(SOURCE_DIRECTORY)/%.cpp, $(OBJECT_DIRECTORY)/%.d, $(SO
 
 TESTCASE = $(wildcard $(TESTCASE_BLOCK_DIRECTORY)/*)
 
+define GET_TESTCASE_BASE
+testcase_base=$$(basename $$testcase); \
+testcase_base=$${testcase_base%.*}
+endef
+
 TARGET = Lab2
 VERIFIER = script/verifier
 ALPHA = 0.5
@@ -57,23 +62,20 @@ check: $(CPPCHECK)
 
 verify: run $(VERIFIER) | $(VERIFICATION_DIRECTORY)
 	for testcase in $(TESTCASE); do \
-		testcase_base=$$(basename "$$testcase"); \
-		testcase_base=$${testcase_base%.*}; \
-		./$(VERIFIER) $(ALPHA) "$$testcase" $(TESTCASE_NET_DIRECTORY)/"$$testcase_base".net $(OUTPUT_DIRECTORY)/"$$testcase_base".out | tee $(VERIFICATION_DIRECTORY)/"$$testcase_base".log; \
+		$(GET_TESTCASE_BASE); \
+		./$(VERIFIER) $(ALPHA) $$testcase $(TESTCASE_NET_DIRECTORY)/$${testcase_base}.net $(OUTPUT_DIRECTORY)/$${testcase_base}.out | tee $(VERIFICATION_DIRECTORY)/$${testcase_base}.log; \
 	done
 
 run: $(TARGET) | $(OUTPUT_DIRECTORY)
 	for testcase in $(TESTCASE); do \
-		testcase_base=$$(basename "$$testcase"); \
-		testcase_base=$${testcase_base%.*}; \
-		./$(TARGET) $(ALPHA) "$$testcase" $(TESTCASE_NET_DIRECTORY)/"$$testcase_base".net $(OUTPUT_DIRECTORY)/"$$testcase_base".out; \
+		$(GET_TESTCASE_BASE); \
+		./$(TARGET) $(ALPHA) $$testcase $(TESTCASE_NET_DIRECTORY)/$${testcase_base}.net $(OUTPUT_DIRECTORY)/$${testcase_base}.out; \
 	done
 
 run_valgrind: $(TARGET) | $(MEMORY_DIRECTORY) $(OUTPUT_DIRECTORY)
 	for testcase in $(TESTCASE); do \
-		testcase_base=$$(basename "$$testcase"); \
-		testcase_base=$${testcase_base%.*}; \
-		$(CHECKCC) $(CHECKCC_FLAG) --log-file=$(MEMORY_DIRECTORY)/"$$testcase_base.log" ./$(TARGET) $(ALPHA) "$$testcase" $(TESTCASE_NET_DIRECTORY)/"$$testcase_base".net $(OUTPUT_DIRECTORY)/"$$testcase_base".out; \
+		$(GET_TESTCASE_BASE); \
+		$(CHECKCC) $(CHECKCC_FLAG) --log-file=$(MEMORY_DIRECTORY)/$${testcase_base}.log ./$(TARGET) $(ALPHA) $$testcase $(TESTCASE_NET_DIRECTORY)/$${testcase_base}.net $(OUTPUT_DIRECTORY)/$${testcase_base}.out; \
 	done
 
 clean:
