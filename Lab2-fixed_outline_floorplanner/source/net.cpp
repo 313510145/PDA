@@ -17,10 +17,6 @@ void net::add_block(block* b_in) {
     }
 }
 
-void net::clear_block_list() {
-    this->block_list.clear();
-}
-
 net::net() {}
 
 net::~net() {}

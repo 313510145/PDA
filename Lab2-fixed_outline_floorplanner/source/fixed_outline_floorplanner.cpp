@@ -149,7 +149,6 @@ fixed_outline_floorplanner::fixed_outline_floorplanner(char* alpha_in) {
 
 fixed_outline_floorplanner::~fixed_outline_floorplanner() {
     for (auto i: this->net_list) {
-        i->clear_block_list();
         delete i;
     }
     this->net_list.clear();
