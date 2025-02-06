@@ -1,7 +1,7 @@
-.PHONY: all check verify run run_valgrind generate debug clean
+.PHONY: all check run run_valgrind debug clean
 
 CXX = g++
-CXX_FLAG = -Wall -Wextra -std=c++11 -g
+CXX_FLAG = -Wall -Wextra -std=c++14 -g -static
 INCLUDE_PATH = -Iheader
 
 CHECKCC = valgrind
@@ -12,12 +12,10 @@ CPPCHECK_FLAG = --enable=all --inconclusive --suppress=missingIncludeSystem
 
 PYTHON3 = python3
 
-GOLDEN_DIRECTORY = golden
 MEMORY_DIRECTORY = memory
 OBJECT_DIRECTORY = object
 OUTPUT_DIRECTORY = output
 LAYOUT_DIRECTORY = layout
-VERIFICATION_DIRECTORY = verification
 
 SOURCE_DIRECTORY = source
 SCRIPT_DIRECTORY = script
@@ -34,13 +32,9 @@ testcase_base=$${testcase_base%.*}
 endef
 
 TARGET = Lab1
-GENERATOR = $(SCRIPT_DIRECTORY)/golden_generator
 DRAW = $(SCRIPT_DIRECTORY)/draw_block_layout.py
 
 all: $(TARGET)
-
-$(GOLDEN_DIRECTORY):
-	mkdir $(GOLDEN_DIRECTORY)
 
 $(MEMORY_DIRECTORY):
 	mkdir $(MEMORY_DIRECTORY)
@@ -54,9 +48,6 @@ $(OUTPUT_DIRECTORY):
 $(LAYOUT_DIRECTORY):
 	mkdir $(LAYOUT_DIRECTORY)
 
-$(VERIFICATION_DIRECTORY):
-	mkdir $(VERIFICATION_DIRECTORY)
-
 $(TARGET): main.cpp $(OBJECT)
 	$(CXX) $(CXX_FLAG) $(INCLUDE_PATH) $^ -o $@
 
@@ -67,12 +58,6 @@ $(OBJECT_DIRECTORY)/%.o: $(SOURCE_DIRECTORY)/%.cpp | $(OBJECT_DIRECTORY)
 
 check: $(CPPCHECK)
 	./$(CPPCHECK) $(CPPCHECK_FLAG) $(INCLUDE_PATH) .
-
-verify: run generate | $(VERIFICATION_DIRECTORY)
-	for testcase in $(TESTCASE); do \
-		$(GET_TESTCASE_BASE); \
-		diff $(OUTPUT_DIRECTORY)/$${testcase_base}.out $(GOLDEN_DIRECTORY)/$${testcase_base}.gold | tee $(VERIFICATION_DIRECTORY)/$${testcase_base}.log; \
-	done
 
 run: $(TARGET) | $(OUTPUT_DIRECTORY)
 	for testcase in $(TESTCASE); do \
@@ -86,12 +71,6 @@ run_valgrind: $(TARGET) | $(MEMORY_DIRECTORY) $(OUTPUT_DIRECTORY)
 		$(CHECKCC) $(CHECKCC_FLAG) --log-file=$(MEMORY_DIRECTORY)/$${testcase_base}.log ./$(TARGET) $$testcase $(OUTPUT_DIRECTORY)/$${testcase_base}.out; \
 	done
 
-generate: $(GENERATOR) | $(GOLDEN_DIRECTORY)
-	for testcase in $(TESTCASE); do \
-		$(GET_TESTCASE_BASE); \
-		./$(GENERATOR) $$testcase $(GOLDEN_DIRECTORY)/$${testcase_base}.gold; \
-	done
-
 debug: $(TARGET) $(DRAW) | $(OUTPUT_DIRECTORY) $(LAYOUT_DIRECTORY)
 	for testcase in $(TESTCASE); do \
 		$(GET_TESTCASE_BASE); \
@@ -100,4 +79,4 @@ debug: $(TARGET) $(DRAW) | $(OUTPUT_DIRECTORY) $(LAYOUT_DIRECTORY)
 	done
 
 clean:
-	rm -rf $(TARGET) $(GOLDEN_DIRECTORY) $(MEMORY_DIRECTORY) $(OBJECT_DIRECTORY) $(OUTPUT_DIRECTORY) $(LAYOUT_DIRECTORY) $(VERIFICATION_DIRECTORY)
+	rm -rf $(TARGET) $(MEMORY_DIRECTORY) $(OBJECT_DIRECTORY) $(OUTPUT_DIRECTORY) $(LAYOUT_DIRECTORY)

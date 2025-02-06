@@ -1,7 +1,7 @@
-.PHONY: all check verify run run_valgrind clean
+.PHONY: all check run run_valgrind clean
 
 CXX = g++
-CXX_FLAG = -Wall -Wextra -std=c++11 -g
+CXX_FLAG = -Wall -Wextra -std=c++14 -g -static
 INCLUDE_PATH = -Iheader
 
 CHECKCC = valgrind
@@ -13,7 +13,6 @@ CPPCHECK_FLAG = --enable=all --inconclusive --suppress=missingIncludeSystem
 MEMORY_DIRECTORY = memory
 OBJECT_DIRECTORY = object
 OUTPUT_DIRECTORY = output
-VERIFICATION_DIRECTORY = verification
 
 SOURCE_DIRECTORY = source
 TESTCASE_DIRECTORY = testcase
@@ -32,7 +31,6 @@ testcase_base=$${testcase_base%.*}
 endef
 
 TARGET = Lab2
-VERIFIER = script/verifier
 ALPHA = 0.5
 
 all: $(TARGET)
@@ -46,9 +44,6 @@ $(OBJECT_DIRECTORY):
 $(OUTPUT_DIRECTORY):
 	mkdir $(OUTPUT_DIRECTORY)
 
-$(VERIFICATION_DIRECTORY):
-	mkdir $(VERIFICATION_DIRECTORY)
-
 $(TARGET): main.cpp $(OBJECT)
 	$(CXX) $(CXX_FLAG) $(INCLUDE_PATH) $^ -o $@
 
@@ -59,12 +54,6 @@ $(OBJECT_DIRECTORY)/%.o: $(SOURCE_DIRECTORY)/%.cpp | $(OBJECT_DIRECTORY)
 
 check: $(CPPCHECK)
 	./$(CPPCHECK) $(CPPCHECK_FLAG) $(INCLUDE_PATH) .
-
-verify: run $(VERIFIER) | $(VERIFICATION_DIRECTORY)
-	for testcase in $(TESTCASE); do \
-		$(GET_TESTCASE_BASE); \
-		./$(VERIFIER) $(ALPHA) $$testcase $(TESTCASE_NET_DIRECTORY)/$${testcase_base}.net $(OUTPUT_DIRECTORY)/$${testcase_base}.out | tee $(VERIFICATION_DIRECTORY)/$${testcase_base}.log; \
-	done
 
 run: $(TARGET) | $(OUTPUT_DIRECTORY)
 	for testcase in $(TESTCASE); do \
@@ -79,4 +68,4 @@ run_valgrind: $(TARGET) | $(MEMORY_DIRECTORY) $(OUTPUT_DIRECTORY)
 	done
 
 clean:
-	rm -rf $(TARGET) $(MEMORY_DIRECTORY) $(OBJECT_DIRECTORY) $(OUTPUT_DIRECTORY) $(VERIFICATION_DIRECTORY)
+	rm -rf $(TARGET) $(MEMORY_DIRECTORY) $(OBJECT_DIRECTORY) $(OUTPUT_DIRECTORY)
