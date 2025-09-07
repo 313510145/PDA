@@ -191,7 +191,7 @@ optimizer_legalizer::~optimizer_legalizer() {
 
 void optimizer_legalizer::find_segments_and_cut(block* b_in) {
     std::map<double, std::vector<segment*>>::iterator it = this->segment_map.lower_bound(b_in->get_lower_left_y());
-    if (it->first != b_in->get_lower_left_y()) {
+    if (it != this->segment_map.begin() && it->first != b_in->get_lower_left_y()) {
         --it;
     }
     do {
@@ -237,7 +237,7 @@ void optimizer_legalizer::find_segments_and_cut(block* b_in) {
 
 void optimizer_legalizer::create_segments_and_merge(block* b_in) {
     std::map<double, std::vector<segment*>>::iterator it = this->segment_map.lower_bound(b_in->get_lower_left_y());
-    if (it->first != b_in->get_lower_left_y()) {
+    if (it != this->segment_map.begin() && it->first != b_in->get_lower_left_y()) {
         --it;
     }
     do {
